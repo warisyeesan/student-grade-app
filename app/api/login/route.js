@@ -17,7 +17,7 @@ export async function POST(request) {
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Sheet1!A2:F',
+      range: 'grade-2569-1!A2:F',
     })
 
     const rows = response.data.values
