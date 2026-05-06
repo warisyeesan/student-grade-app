@@ -30,8 +30,8 @@ export async function POST(request) {
     }
 
     return NextResponse.json({
-      id: student[0],
-      name: student[1],
+      name: student[0],
+      class: student[1],
       alQuran: student[4],
       math: student[5],
     })
