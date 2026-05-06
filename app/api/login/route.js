@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request) {
   try {
-    const { username, password } = await request.json()
+    const { username } = await request.json()
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -23,17 +23,29 @@ export async function POST(request) {
     const rows = response.data.values
     if (!rows) return NextResponse.json({ error: 'ไม่พบข้อมูล' }, { status: 404 })
 
-    const student = rows.find(row => row[2] === username && row[3] === password)
+    const student = rows.find(row => row[2] === username)
 
     if (!student) {
-      return NextResponse.json({ error: 'Username หรือ Password ไม่ถูกต้อง' }, { status: 401 })
+      return NextResponse.json({ error: 'ไม่พบรหัสนักเรียนนี้' }, { status: 401 })
+    }
+
+    const classmates = rows.filter(row => row[1] === student[1])
+
+    const avg = (data, col) => {
+      const scores = data.map(r => parseFloat(r[col])).filter(n => !isNaN(n))
+      return scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2) : '-'
     }
 
     return NextResponse.json({
       name: student[0],
       class: student[1],
-      alQuran: student[4],
-      math: student[5],
+      username: student[2],
+      alQuran: student[3],
+      math: student[4],
+      avgAlQuran: avg(classmates, 3),
+      avgMath: avg(classmates, 4),
+      schoolAvgAlQuran: avg(rows, 3),
+      schoolAvgMath: avg(rows, 4),
     })
   } catch (err) {
     return NextResponse.json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' }, { status: 500 })
