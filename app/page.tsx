@@ -4,7 +4,7 @@ import { useState } from 'react'
 export default function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [grade, setGrade] = useState(null)
+  const [grade, setGrade] = useState<{ id: string; name: string; alQuran: string; math: string } | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
