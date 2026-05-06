@@ -6,6 +6,7 @@ export default function LoginPage() {
   const [grade, setGrade] = useState<{ name: string; class: string; username: string; alQuran: string; math: string; avgAlQuran: string; avgMath: string; schoolAvgAlQuran: string; schoolAvgMath: string } | null>(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [countdown, setCountdown] = useState<number | null>(null)
   const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 })
   const rafRef = useRef<number | null>(null)
 
@@ -37,8 +38,41 @@ export default function LoginPage() {
     if (!res.ok) {
       setError(data.error)
     } else {
-      setGrade(data)
+      setCountdown(3)
+      let count = 3
+      const timer = setInterval(() => {
+        count -= 1
+        if (count === 0) {
+          clearInterval(timer)
+          setCountdown(null)
+          setGrade(data)
+        } else {
+          setCountdown(count)
+        }
+      }, 800)
     }
+  }
+
+  function getMathLevel(score: string) {
+    if (!score || score === 'N/A') return { label: 'ยังไม่ได้ทดสอบ', color: '#9ca3af' }
+    const n = parseFloat(score)
+    if (n >= 55) return { label: 'ยอดเยี่ยม', color: '#16a34a' }
+    if (n >= 45) return { label: 'ดีมาก', color: '#2563eb' }
+    if (n >= 30) return { label: 'ดี', color: '#7c3aed' }
+    if (n >= 20) return { label: 'พัฒนาได้', color: '#d97706' }
+    if (n >= 0)  return { label: 'ต้องเร่งพัฒนา', color: '#dc2626' }
+    return { label: 'ยังไม่ได้ทดสอบ', color: '#9ca3af' }
+  }
+
+  function getAlQuranLevel(score: string) {
+    if (!score || score === 'N/A') return { label: 'ยังไม่ได้ทดสอบ', color: '#9ca3af' }
+    const n = parseFloat(score)
+    if (n === 5)  return { label: 'ยอดเยี่ยม', color: '#16a34a' }
+    if (n === 4)  return { label: 'ดีมาก', color: '#2563eb' }
+    if (n === 3)  return { label: 'ดี', color: '#7c3aed' }
+    if (n === 2)  return { label: 'พัฒนาได้', color: '#d97706' }
+    if (n <= 1)   return { label: 'ต้องเร่งพัฒนา', color: '#dc2626' }
+    return { label: 'ยังไม่ได้ทดสอบ', color: '#9ca3af' }
   }
 
   return (
@@ -57,7 +91,13 @@ export default function LoginPage() {
 
         {/* Body */}
         <div className="px-8 py-6" style={{ background: 'radial-gradient(ellipse at 0% 0%, #1C4D8D 0%, transparent 65%), #ffffff' }}>
-          {!grade ? (
+          {countdown !== null ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <span className="font-bold text-center" style={{ fontSize: countdown === 3 ? 28 : 32, color: '#1C4D8D', lineHeight: 1.4, display: 'inline-block' }}>
+                {countdown === 3 ? 'Allahu Akbar' : countdown === 2 ? 'Alhamdulillah' : 'Subhanallah'}
+              </span>
+            </div>
+          ) : !grade ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1" style={{ color: '#000000' }}>รหัสนักเรียน</label>
@@ -111,18 +151,24 @@ export default function LoginPage() {
                   <div className="text-right">
                     <p className="text-xs font-medium" style={{ color: '#4988C4' }}>คะแนนที่ได้</p>
                     <p className="text-2xl font-bold" style={{ color: '#000000' }}>{grade.alQuran}</p>
+                    <p className="text-xs font-semibold mt-1" style={{ color: getAlQuranLevel(grade.alQuran).color }}>
+                      {getAlQuranLevel(grade.alQuran).label}
+                    </p>
                   </div>
                 </div>
                 <div className="flex justify-between items-center rounded-xl px-4 py-4" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #A8D4F5 100%)' }}>
                   <div>
                     <p className="text-base font-bold text-gray-900">คณิตศาสตร์</p>
-                    <p className="text-xs mt-0.5" style={{ color: '#000000' }}>คะแนนเต็ม 30</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#000000' }}>คะแนนเต็ม 60</p>
                     <p className="text-xs mt-0.5" style={{ color: '#000000' }}>คะแนนเฉลี่ยทั้งห้อง: {grade.avgMath}</p>
                     <p className="text-xs mt-0.5" style={{ color: '#000000' }}>คะแนนเฉลี่ยทั้งโรงเรียน: {grade.schoolAvgMath}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs font-medium" style={{ color: '#4988C4' }}>คะแนนที่ได้</p>
                     <p className="text-2xl font-bold" style={{ color: '#000000' }}>{grade.math}</p>
+                    <p className="text-xs font-semibold mt-1" style={{ color: getMathLevel(grade.math).color }}>
+                      {getMathLevel(grade.math).label}
+                    </p>
                   </div>
                 </div>
               </div>
