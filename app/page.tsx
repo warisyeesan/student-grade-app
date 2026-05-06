@@ -38,8 +38,8 @@ export default function LoginPage() {
     if (!res.ok) {
       setError(data.error)
     } else {
-      setCountdown(3)
-      let count = 3
+      setCountdown(4)
+      let count = 4
       const timer = setInterval(() => {
         count -= 1
         if (count === 0) {
@@ -81,8 +81,8 @@ export default function LoginPage() {
 
         {/* Header */}
         <div style={{ background: 'linear-gradient(135deg, #0F2854, #1C4D8D)' }} className="px-8 py-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3">
-            <span style={{ fontFamily: 'var(--font-nabla)', fontSize: 36, color: 'white', lineHeight: 1 }}>PS</span>
+          <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mx-auto mb-3 overflow-hidden">
+            <img src="/logo.jpeg" alt="logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-white text-xl font-bold">ผลการทดสอบ</h1>
           <p className="text-white text-sm mt-1">Prateepsassana Islamic School</p>
@@ -92,15 +92,15 @@ export default function LoginPage() {
         {/* Body */}
         <div className="px-8 py-6" style={{ background: 'radial-gradient(ellipse at 0% 0%, #1C4D8D 0%, transparent 65%), #ffffff' }}>
           {countdown !== null ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <span className="font-bold text-center" style={{ fontSize: countdown === 3 ? 28 : 32, color: '#1C4D8D', lineHeight: 1.4, display: 'inline-block' }}>
-                {countdown === 3 ? 'Allahu Akbar' : countdown === 2 ? 'Alhamdulillah' : 'Subhanallah'}
+            <div className="flex flex-col items-center justify-center" style={{ height: 200 }}>
+              <span className="font-bold text-center" style={{ fontSize: 28, color: '#1C4D8D', lineHeight: 1.4, display: 'inline-block' }}>
+                {countdown === 4 ? 'Subhanallah' : countdown === 3 ? 'Alhamdulillah' : countdown === 2 ? 'Lailahaillallah' : 'Allahu Akbar'}
               </span>
             </div>
           ) : !grade ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#000000' }}>รหัสนักเรียน</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#000000' }}>Sign In</label>
                 <input
                   type="text"
                   value={username}
