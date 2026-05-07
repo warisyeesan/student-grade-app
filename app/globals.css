@@ -24,12 +24,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@keyframes flipIn {
-  0%   { transform: scaleY(-1); opacity: 0; }
-  50%  { transform: scaleY(-0.2); opacity: 0.5; }
-  100% { transform: scaleY(1); opacity: 1; }
+@keyframes fadeInChar {
+  0%   { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-.flip-in {
-  animation: flipIn 0.5s ease-out forwards;
+.fade-in-char {
+  animation: fadeInChar 0.35s ease-out forwards;
 }

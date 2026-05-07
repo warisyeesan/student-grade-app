@@ -100,7 +100,7 @@ export default function LoginPage() {
           ) : !grade ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1" style={{ color: '#000000' }}>Sign In</label>
+                <label className="block text-sm font-medium mb-1" style={{ color: '#000000' }}>เข้าสู่ระบบ</label>
                 <input
                   type="text"
                   value={username}
@@ -129,8 +129,13 @@ export default function LoginPage() {
             <div className="space-y-4">
               {/* Student info */}
               <div className="flex items-center gap-4 rounded-xl px-4 py-4" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #A8D4F5 100%)' }}>
-                <div className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #0F2854, #1C4D8D)' }}>
-                  {grade.name.charAt(0)}
+                <div className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #0F2854, #1C4D8D)' }}>
+                  <img
+                    src={grade.name.startsWith('เด็กชาย') ? '/man.svg' : grade.name.startsWith('เด็กหญิง') ? '/woman.svg' : '/man.svg'}
+                    alt="avatar"
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: 'center 20%', transform: 'translateY(5px)' }}
+                  />
                 </div>
                 <div>
                   <p className="font-bold text-gray-800">{grade.name}</p>
